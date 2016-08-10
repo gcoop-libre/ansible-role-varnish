@@ -1,0 +1,3 @@
+---
+varnish_use_default_vcl: False
+varnish_secret: "{{ inventory_hostname | to_uuid }}"
