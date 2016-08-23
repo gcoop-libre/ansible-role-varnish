@@ -38,3 +38,18 @@
     - varnishncsa
     - varnishlog
   when: ansible_distribution_release == "jessie"
+
+# https://github.com/geerlingguy/ansible-role-varnish/pull/35
+- name: Copy Debian Jessie/Xenial specific Varnish configs (systemd).
+  template:
+    src: varnish.service.j2
+    dest: "{{ varnish_systemd_config_path }}/varnish.service"
+    owner: root
+    group: root
+    mode: 0644
+  when: >
+    (ansible_os_family == 'Debian') and
+    (ansible_distribution_release == "jessie" or ansible_distribution_release == "xenial")
+  notify:
+    - reload systemd
+    - restart varnish
