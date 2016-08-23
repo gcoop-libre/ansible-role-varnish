@@ -18,3 +18,23 @@
   when: >
     (ansible_os_family == 'Debian') and
     (ansible_distribution_release == "jessie" or ansible_distribution_release == "xenial")
+
+# https://github.com/geerlingguy/ansible-role-varnish/pull/33
+- name: Ensure Varnish services start on boot.
+  service:
+    name: "{{ item }}"
+    enabled: yes
+  with_items:
+    - varnish
+    - varnishncsa
+    - varnishlog
+  when: ansible_distribution_release not in ["xenial", "jessie"]
+# Workaround for systems where sysv and systemd script files
+# https://github.com/ansible/ansible-modules-core/issues/3764
+- name: Ensure Varnish services start on boot.
+  command: systemctl enable -f {{ item }}
+  with_items:
+    - varnish
+    - varnishncsa
+    - varnishlog
+  when: ansible_distribution_release == "jessie"
