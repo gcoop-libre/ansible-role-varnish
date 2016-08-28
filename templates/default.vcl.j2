@@ -72,26 +72,52 @@ sub vcl_recv {
 
 {% if varnish_directors | length > 0 %}
 {% for director in varnish_directors %}
+{% if director.name == 'default' %}
+{% set default_director_exists = True %}
+{% endif %}
 {% if director.director_for is defined and director.director_for | length > 0 %}
-  if (
+  {% if conditional_director_exists | default(False) and not loop.first %}else {% endif %}if (
 {% for director_for in director.director_for %}
     req.http.host ~ "{{ director_for }}"{% if not loop.last %} ||{% endif %}
 {% endfor %}
   ) {
     set req.backend_hint = {{ director.name }}.backend();
   }
+{% set conditional_director_exists = True %}
+{% endif %}
+{% if loop.last %}
+{% if conditional_director_exists | default(False) %}
+  else {
+    set req.backend_hint = {% if default_director_exists | default(False) %}default{% else %}{{ varnish_directors.0.name }}{% endif %}.backend();
+  }
+{% else %}
+  set req.backend_hint = {% if default_director_exists | default(False) %}default{% else %}{{ varnish_directors.0.name }}{% endif %}.backend();
+{% endif %}
 {% endif %}
 {% endfor %}
 {% elif varnish_backends | length > 0 %}
 {% for backend in varnish_backends %}
+{% if backend.name == 'default' %}
+{% set default_backend_exists = True %}
+{% endif %}
 {% if backend.backend_for is defined and backend.backend_for | length > 0 %}
-  if (
+  {% if conditional_backend_exists | default(False) and not loop.first %}else {% endif %}if (
 {% for backend_for in backend.backend_for %}
     req.http.host ~ "{{ backend_for }}"{% if not loop.last %} ||{% endif %}
 {% endfor %}
   ) {
     set req.backend_hint = {{ backend.name }};
   }
+{% set conditional_backend_exists = True %}
+{% endif %}
+{% if loop.last %}
+{% if conditional_backend_exists | default(False) %}
+  else {
+    set req.backend_hint = {% if default_backend_exists | default(False) %}default{% else %}{{ varnish_backends.0.name }}{% endif %}.backend();
+  }
+{% else %}
+  set req.backend_hint = {% if default_backend_exists | default(False) %}default{% else %}{{ varnish_backends.0.name }}{% endif %}.backend();
+{% endif %}
 {% endif %}
 {% endfor %}
 {% endif %}
