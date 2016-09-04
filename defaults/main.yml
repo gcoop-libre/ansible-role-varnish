@@ -142,3 +142,6 @@ varnish_vcl_backend_response_force_beresp_ttl: False
 varnish_vcl_backend_response_beresp_grace: 6
 varnish_vcl_backend_error_response: "{{ lookup('file', 'files/503.j2') }}"
 varnish_vcl_deliver_remove_headers: []
+# https://github.com/geerlingguy/ansible-role-varnish/pull/37
+varnish_pidfile: false
+varnish_pidfile_path: /run/varnishd.pid
