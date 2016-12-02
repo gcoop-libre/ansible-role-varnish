@@ -266,11 +266,6 @@ HTML code for the 503 (Backend unavailable) page.
 
 List of HTTP headers to remove from the backend response before forwarding it to the client.
 
-    varnish_pidfile: false
-    varnish_pidfile_path: /run/varnishd.pid
-
-Enables the creation of a PID file and its path, when varnishd is running. This should be removed when the [pull request #37](https://github.com/geerlingguy/ansible-role-varnish/pull/37) is accepted.
-
 Dependencies
 ------------
 
