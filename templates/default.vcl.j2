@@ -78,7 +78,7 @@ sub vcl_recv {
 {% if director.director_for is defined and director.director_for | length > 0 %}
   {% if conditional_director_exists | default(False) and not loop.first %}else {% endif %}if (
 {% for director_for in director.director_for %}
-    req.http.host ~ "{{ director_for }}"{% if not loop.last %} ||{% endif %}
+    req.http.host ~ "{{ director_for }}"{% if not loop.last %} ||{% endif %} 
 {% endfor %}
   ) {
     set req.backend_hint = {{ director.name }}.backend();
@@ -103,7 +103,7 @@ sub vcl_recv {
 {% if backend.backend_for is defined and backend.backend_for | length > 0 %}
   {% if conditional_backend_exists | default(False) and not loop.first %}else {% endif %}if (
 {% for backend_for in backend.backend_for %}
-    req.http.host ~ "{{ backend_for }}"{% if not loop.last %} ||{% endif %}
+    req.http.host ~ "{{ backend_for }}"{% if not loop.last %} ||{% endif %} 
 {% endfor %}
   ) {
     set req.backend_hint = {{ backend.name }};
@@ -251,12 +251,12 @@ sub vcl_recv {
       ! req.http.host ~ "{{ exception.host }}" ||
       (
 {% for url in exception.urls %}
-        ! req.url ~ "{{ url }}"{% if not loop.last %} &&{% endif %}
+        ! req.url ~ "{{ url }}"{% if not loop.last %} &&{% endif %} 
 {% endfor %}
       )
-    ){% if not loop.last %} &&{% endif %}
+    ){% if not loop.last %} &&{% endif %} 
 {% else %}
-    ! req.http.host ~ "{{ exception.host }}"{% if not loop.last %} &&{% endif %}
+    ! req.http.host ~ "{{ exception.host }}"{% if not loop.last %} &&{% endif %} 
 {% endif %}
 {% elif exception.url is defined %}
 {% if exception.hosts is defined %}
@@ -264,12 +264,12 @@ sub vcl_recv {
       ! req.url ~ "{{ exception.url }}" ||
       (
 {% for host in exception.hosts %}
-        ! req.http.host ~ "{{ host }}"{% if not loop.last %} &&{% endif %}
+        ! req.http.host ~ "{{ host }}"{% if not loop.last %} &&{% endif %} 
 {% endfor %}
       )
-    ){% if not loop.last %} &&{% endif %}
+    ){% if not loop.last %} &&{% endif %} 
 {% else %}
-    ! req.url ~ "{{ exception.url }}"{% if not loop.last %} &&{% endif %}
+    ! req.url ~ "{{ exception.url }}"{% if not loop.last %} &&{% endif %} 
 {% endif %}
 {% endif %}
 {% endfor %}
@@ -286,12 +286,12 @@ sub vcl_recv {
       req.http.host ~ "{{ condition.host }}" &&
       (
 {% for url in condition.urls %}
-        req.url ~ "{{ url }}"{% if not loop.last %} ||{% endif %}
+        req.url ~ "{{ url }}"{% if not loop.last %} ||{% endif %} 
 {% endfor %}
       )
-    ){% if not loop.last %} ||{% endif %}
+    ){% if not loop.last %} ||{% endif %} 
 {% else %}
-    req.http.host ~ "{{ condition.host }}"{% if not loop.last %} ||{% endif %}
+    req.http.host ~ "{{ condition.host }}"{% if not loop.last %} ||{% endif %} 
 {% endif %}
 {% elif condition.url is defined %}
 {% if condition.hosts is defined %}
@@ -299,12 +299,12 @@ sub vcl_recv {
       req.url ~ "{{ condition.url }}" &&
       (
 {% for host in condition.hosts %}
-        req.http.host ~ "{{ host }}"{% if not loop.last %} ||{% endif %}
+        req.http.host ~ "{{ host }}"{% if not loop.last %} ||{% endif %} 
 {% endfor %}
       )
     ){% if not loop.last %} ||{% endif %}
 {% else %}
-    req.url ~ "{{ condition.url }}"{% if not loop.last %} ||{% endif %}
+    req.url ~ "{{ condition.url }}"{% if not loop.last %} ||{% endif %} 
 {% endif %}
 {% endif %}
 {% endfor %}
@@ -333,12 +333,12 @@ sub vcl_recv {
       ! req.http.host ~ "{{ exception.host }}" ||
       (
 {% for url in exception.urls %}
-        ! req.url ~ "{{ url }}"{% if not loop.last %} &&{% endif %}
+        ! req.url ~ "{{ url }}"{% if not loop.last %} &&{% endif %} 
 {% endfor %}
       )
-    ){% if not loop.last %} &&{% endif %}
+    ){% if not loop.last %} &&{% endif %} 
 {% else %}
-    ! req.http.host ~ "{{ exception.host }}"{% if not loop.last %} &&{% endif %}
+    ! req.http.host ~ "{{ exception.host }}"{% if not loop.last %} &&{% endif %} 
 {% endif %}
 {% elif exception.url is defined %}
 {% if exception.hosts is defined %}
@@ -346,12 +346,12 @@ sub vcl_recv {
       ! req.url ~ "{{ exception.url }}" ||
       (
 {% for host in exception.hosts %}
-        ! req.http.host ~ "{{ host }}"{% if not loop.last %} &&{% endif %}
+        ! req.http.host ~ "{{ host }}"{% if not loop.last %} &&{% endif %} 
 {% endfor %}
       )
     ){% if not loop.last %} &&{% endif %}
 {% else %}
-    ! req.url ~ "{{ exception.url }}"{% if not loop.last %} &&{% endif %}
+    ! req.url ~ "{{ exception.url }}"{% if not loop.last %} &&{% endif %} 
 {% endif %}
 {% endif %}
 {% endfor %}
@@ -368,12 +368,12 @@ sub vcl_recv {
       req.http.host ~ "{{ condition.host }}" &&
       (
 {% for url in condition.urls %}
-        req.url ~ "{{ url }}"{% if not loop.last %} ||{% endif %}
+        req.url ~ "{{ url }}"{% if not loop.last %} ||{% endif %} 
 {% endfor %}
       )
-    ){% if not loop.last %} ||{% endif %}
+    ){% if not loop.last %} ||{% endif %} 
 {% else %}
-    req.http.host ~ "{{ condition.host }}"{% if not loop.last %} ||{% endif %}
+    req.http.host ~ "{{ condition.host }}"{% if not loop.last %} ||{% endif %} 
 {% endif %}
 {% elif condition.url is defined %}
 {% if condition.hosts is defined %}
@@ -381,12 +381,12 @@ sub vcl_recv {
       req.url ~ "{{ condition.url }}" &&
       (
 {% for host in condition.hosts %}
-        req.http.host ~ "{{ host }}"{% if not loop.last %} ||{% endif %}
+        req.http.host ~ "{{ host }}"{% if not loop.last %} ||{% endif %} 
 {% endfor %}
       )
-    ){% if not loop.last %} ||{% endif %}
+    ){% if not loop.last %} ||{% endif %} 
 {% else %}
-    req.url ~ "{{ condition.url }}"{% if not loop.last %} ||{% endif %}
+    req.url ~ "{{ condition.url }}"{% if not loop.last %} ||{% endif %} 
 {% endif %}
 {% endif %}
 {% endfor %}
@@ -407,12 +407,12 @@ sub vcl_recv {
       ! req.http.host ~ "{{ exception.host }}" ||
       (
 {% for url in exception.urls %}
-        ! req.url ~ "{{ url }}"{% if not loop.last %} &&{% endif %}
+        ! req.url ~ "{{ url }}"{% if not loop.last %} &&{% endif %} 
 {% endfor %}
       )
-    ){% if not loop.last %} &&{% endif %}
+    ){% if not loop.last %} &&{% endif %} 
 {% else %}
-    ! req.http.host ~ "{{ exception.host }}"{% if not loop.last %} &&{% endif %}
+    ! req.http.host ~ "{{ exception.host }}"{% if not loop.last %} &&{% endif %} 
 {% endif %}
 {% elif exception.url is defined %}
 {% if exception.hosts is defined %}
@@ -420,12 +420,12 @@ sub vcl_recv {
       ! req.url ~ "{{ exception.url }}" ||
       (
 {% for host in exception.hosts %}
-        ! req.http.host ~ "{{ host }}"{% if not loop.last %} &&{% endif %}
+        ! req.http.host ~ "{{ host }}"{% if not loop.last %} &&{% endif %} 
 {% endfor %}
       )
-    ){% if not loop.last %} &&{% endif %}
+    ){% if not loop.last %} &&{% endif %} 
 {% else %}
-    ! req.url ~ "{{ exception.url }}"{% if not loop.last %} &&{% endif %}
+    ! req.url ~ "{{ exception.url }}"{% if not loop.last %} &&{% endif %} 
 {% endif %}
 {% endif %}
 {% endfor %}
@@ -442,12 +442,12 @@ sub vcl_recv {
       req.http.host ~ "{{ condition.host }}" &&
       (
 {% for url in condition.urls %}
-        req.url ~ "{{ url }}"{% if not loop.last %} ||{% endif %}
+        req.url ~ "{{ url }}"{% if not loop.last %} ||{% endif %} 
 {% endfor %}
       )
-    ){% if not loop.last %} ||{% endif %}
+    ){% if not loop.last %} ||{% endif %} 
 {% else %}
-    req.http.host ~ "{{ condition.host }}"{% if not loop.last %} ||{% endif %}
+    req.http.host ~ "{{ condition.host }}"{% if not loop.last %} ||{% endif %} 
 {% endif %}
 {% elif condition.url is defined %}
 {% if condition.hosts is defined %}
@@ -455,12 +455,12 @@ sub vcl_recv {
       req.url ~ "{{ condition.url }}" &&
       (
 {% for host in condition.hosts %}
-        req.http.host ~ "{{ host }}"{% if not loop.last %} ||{% endif %}
+        req.http.host ~ "{{ host }}"{% if not loop.last %} ||{% endif %} 
 {% endfor %}
       )
-    ){% if not loop.last %} ||{% endif %}
+    ){% if not loop.last %} ||{% endif %} 
 {% else %}
-    req.url ~ "{{ condition.url }}"{% if not loop.last %} ||{% endif %}
+    req.url ~ "{{ condition.url }}"{% if not loop.last %} ||{% endif %} 
 {% endif %}
 {% endif %}
 {% endfor %}
@@ -613,12 +613,12 @@ sub vcl_backend_response {
       ! bereq.http.host ~ "{{ exception.host }}" ||
       (
 {% for url in exception.urls %}
-        ! bereq.url ~ "{{ url }}"{% if not loop.last %} &&{% endif %}
+        ! bereq.url ~ "{{ url }}"{% if not loop.last %} &&{% endif %} 
 {% endfor %}
       )
-    ){% if not loop.last %} &&{% endif %}
+    ){% if not loop.last %} &&{% endif %} 
 {% else %}
-    ! bereq.http.host ~ "{{ exception.host }}"{% if not loop.last %} &&{% endif %}
+    ! bereq.http.host ~ "{{ exception.host }}"{% if not loop.last %} &&{% endif %} 
 {% endif %}
 {% elif exception.url is defined %}
 {% if exception.hosts is defined %}
@@ -626,12 +626,12 @@ sub vcl_backend_response {
       ! bereq.url ~ "{{ exception.url }}" ||
       (
 {% for host in exception.hosts %}
-        ! bereq.http.host ~ "{{ host }}"{% if not loop.last %} &&{% endif %}
+        ! bereq.http.host ~ "{{ host }}"{% if not loop.last %} &&{% endif %} 
 {% endfor %}
       )
-    ){% if not loop.last %} &&{% endif %}
+    ){% if not loop.last %} &&{% endif %} 
 {% else %}
-    ! bereq.url ~ "{{ exception.url }}"{% if not loop.last %} &&{% endif %}
+    ! bereq.url ~ "{{ exception.url }}"{% if not loop.last %} &&{% endif %} 
 {% endif %}
 {% endif %}
 {% endfor %}
@@ -648,12 +648,12 @@ sub vcl_backend_response {
       bereq.http.host ~ "{{ condition.host }}" &&
       (
 {% for url in condition.urls %}
-        bereq.url ~ "{{ url }}"{% if not loop.last %} ||{% endif %}
+        bereq.url ~ "{{ url }}"{% if not loop.last %} ||{% endif %} 
 {% endfor %}
       )
-    ){% if not loop.last %} ||{% endif %}
+    ){% if not loop.last %} ||{% endif %} 
 {% else %}
-    bereq.http.host ~ "{{ condition.host }}"{% if not loop.last %} ||{% endif %}
+    bereq.http.host ~ "{{ condition.host }}"{% if not loop.last %} ||{% endif %} 
 {% endif %}
 {% elif condition.url is defined %}
 {% if condition.hosts is defined %}
@@ -661,12 +661,12 @@ sub vcl_backend_response {
       bereq.url ~ "{{ condition.url }}" &&
       (
 {% for host in condition.hosts %}
-        bereq.http.host ~ "{{ host }}"{% if not loop.last %} ||{% endif %}
+        bereq.http.host ~ "{{ host }}"{% if not loop.last %} ||{% endif %} 
 {% endfor %}
       )
-    ){% if not loop.last %} ||{% endif %}
+    ){% if not loop.last %} ||{% endif %} 
 {% else %}
-    bereq.url ~ "{{ condition.url }}"{% if not loop.last %} ||{% endif %}
+    bereq.url ~ "{{ condition.url }}"{% if not loop.last %} ||{% endif %} 
 {% endif %}
 {% endif %}
 {% endfor %}
@@ -698,12 +698,12 @@ sub vcl_backend_response {
       ! bereq.http.host ~ "{{ exception.host }}" ||
       (
 {% for url in exception.urls %}
-        ! bereq.url ~ "{{ url }}"{% if not loop.last %} &&{% endif %}
+        ! bereq.url ~ "{{ url }}"{% if not loop.last %} &&{% endif %} 
 {% endfor %}
       )
-    ){% if not loop.last %} &&{% endif %}
+    ){% if not loop.last %} &&{% endif %} 
 {% else %}
-    ! bereq.http.host ~ "{{ exception.host }}"{% if not loop.last %} &&{% endif %}
+    ! bereq.http.host ~ "{{ exception.host }}"{% if not loop.last %} &&{% endif %} 
 {% endif %}
 {% elif exception.url is defined %}
 {% if exception.hosts is defined %}
@@ -711,12 +711,12 @@ sub vcl_backend_response {
       ! bereq.url ~ "{{ exception.url }}" ||
       (
 {% for host in exception.hosts %}
-        ! bereq.http.host ~ "{{ host }}"{% if not loop.last %} &&{% endif %}
+        ! bereq.http.host ~ "{{ host }}"{% if not loop.last %} &&{% endif %} 
 {% endfor %}
       )
-    ){% if not loop.last %} &&{% endif %}
+    ){% if not loop.last %} &&{% endif %} 
 {% else %}
-    ! bereq.url ~ "{{ exception.url }}"{% if not loop.last %} &&{% endif %}
+    ! bereq.url ~ "{{ exception.url }}"{% if not loop.last %} &&{% endif %} 
 {% endif %}
 {% endif %}
 {% endfor %}
@@ -733,12 +733,12 @@ sub vcl_backend_response {
       bereq.http.host ~ "{{ condition.host }}" &&
       (
 {% for url in condition.urls %}
-        bereq.url ~ "{{ url }}"{% if not loop.last %} ||{% endif %}
+        bereq.url ~ "{{ url }}"{% if not loop.last %} ||{% endif %} 
 {% endfor %}
       )
-    ){% if not loop.last %} ||{% endif %}
+    ){% if not loop.last %} ||{% endif %} 
 {% else %}
-    bereq.http.host ~ "{{ condition.host }}"{% if not loop.last %} ||{% endif %}
+    bereq.http.host ~ "{{ condition.host }}"{% if not loop.last %} ||{% endif %} 
 {% endif %}
 {% elif condition.url is defined %}
 {% if condition.hosts is defined %}
@@ -746,12 +746,12 @@ sub vcl_backend_response {
       bereq.url ~ "{{ condition.url }}" &&
       (
 {% for host in condition.hosts %}
-        bereq.http.host ~ "{{ host }}"{% if not loop.last %} ||{% endif %}
+        bereq.http.host ~ "{{ host }}"{% if not loop.last %} ||{% endif %} 
 {% endfor %}
       )
-    ){% if not loop.last %} ||{% endif %}
+    ){% if not loop.last %} ||{% endif %} 
 {% else %}
-    bereq.url ~ "{{ condition.url }}"{% if not loop.last %} ||{% endif %}
+    bereq.url ~ "{{ condition.url }}"{% if not loop.last %} ||{% endif %} 
 {% endif %}
 {% endif %}
 {% endfor %}
