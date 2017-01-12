@@ -62,6 +62,7 @@ This properties set the default values for the backends of the list that does no
         first_byte_timeout: 300 (default)
         connect_timeout: 5 (default)
         between_bytes_timeout: 2 (default)
+        probe: True (default)
         probe_url: /
         probe_request: | (default)
           "HEAD / HTTP/1.1"

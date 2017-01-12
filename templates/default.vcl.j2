@@ -14,6 +14,7 @@ backend {{ backend.name }} {
   .first_byte_timeout = {{ backend.first_byte_timeout | default(varnish_backends_defaults.first_byte_timeout) }}s;
   .connect_timeout = {{ backend.connect_timeout | default(varnish_backends_defaults.connect_timeout) }}s;
   .between_bytes_timeout = {{ backend.between_bytes_timeout | default(varnish_backends_defaults.between_bytes_timeout) }}s;
+{% if backend.probe | default(True) %}
   .probe = {
 {% if backend.probe_url is defined and backend.probe_url | length > 0 %}
     .url = "{{ backend.probe_url }}";
@@ -31,6 +32,7 @@ backend {{ backend.name }} {
     .window = {{ backend.probe_window | default(varnish_backends_defaults.probe_window) }};
     .threshold = {{ backend.probe_threshold | default(varnish_backends_defaults.probe_threshold) }};
   }
+{% endif %}
 }
 {% endfor %}
 {% endif %}
