@@ -115,10 +115,10 @@ sub vcl_recv {
 {% if loop.last %}
 {% if conditional_backend_exists | default(False) %}
   else {
-    set req.backend_hint = {% if default_backend_exists | default(False) %}default{% else %}{{ varnish_backends.0.name }}{% endif %}.backend();
+    set req.backend_hint = {% if default_backend_exists | default(False) %}default{% else %}{{ varnish_backends.0.name }}{% endif %};
   }
 {% else %}
-  set req.backend_hint = {% if default_backend_exists | default(False) %}default{% else %}{{ varnish_backends.0.name }}{% endif %}.backend();
+  set req.backend_hint = {% if default_backend_exists | default(False) %}default{% else %}{{ varnish_backends.0.name }}{% endif %};
 {% endif %}
 {% endif %}
 {% endfor %}

@@ -270,7 +270,7 @@ List of HTTP headers to remove from the backend response before forwarding it to
 Dependencies
 ------------
 
-None.
+    geerlingguy.varnish
 
 Example Playbook
 ----------------
