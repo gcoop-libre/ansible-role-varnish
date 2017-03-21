@@ -1,11 +1,21 @@
 ---
-- name: Copy Varnish default VCL.
+- name: Generate Varnish default VCL.
   template:
     src: "{{ varnish_default_vcl_template_path }}"
-    dest: "{{ varnish_config_path }}/default.vcl"
+    dest: "{{ varnish_config_path }}/default-generated.vcl"
     owner: root
     group: root
     mode: 0644
+
+- name: Copy Varnish default VCL.
+  copy:
+    src: "{{ varnish_config_path }}/default-generated.vcl"
+    dest: "{{ varnish_config_path }}/default.vcl"
+    remote_src: True
+    owner: root
+    group: root
+    mode: 0644
+    validate: /usr/sbin/varnishd -C -f %s
   notify: restart varnish
 
 # Workaround for systems where sysv and systemd script files
