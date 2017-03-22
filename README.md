@@ -297,6 +297,6 @@ GPLv2
 Author Information
 ------------------
 
-This role was created in 2016 by [gcoop Cooperativa de Software Libre](http://gcoop.coop).
+This role was created in 2016 by [gcoop Cooperativa de Software Libre](https://www.gcoop.coop).
 
 It extends the functionality of the Varnish role created in 2014 by [Jeff Geerling](http://jeffgeerling.com/), author of [Ansible for DevOps](http://ansiblefordevops.com/).
