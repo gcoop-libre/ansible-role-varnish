@@ -1,5 +1,18 @@
 ---
+varnish_package_name: varnish
+varnish_version: "5.2"
+varnish_default_vcl_template_path: default.vcl.j2
+varnish_listen_port: 80
 varnish_secret: "{{ inventory_hostname | to_uuid }}"
+varnish_config_path: /etc/varnish
+varnish_limit_nofile: 131072
+varnish_admin_listen_host: 127.0.0.1
+varnish_admin_listen_port: 6082
+varnish_storage: "malloc,{{ ((ansible_memtotal_mb * 0.75) | int) }}M"
+varnish_pidfile: /run/varnishd.pid
+varnish_enabled_services:
+  - varnish
+
 varnish_backends_defaults:
   max_connections: 300
   first_byte_timeout: 300
