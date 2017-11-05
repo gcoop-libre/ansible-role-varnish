@@ -13,34 +13,51 @@ Role Variables
 
 Available variables are listed below, along with default values (see `defaults/main.yml`):
 
-    varnish_version: "4.0"
+    varnish_package_name: varnish
 
-Varnish version that should be installed. See `https://repo.varnish-cache.org/redhat/` for a listing of available versions (e.g. `3.0`, `4.0`, `4.1`). _Note: Ubuntu 16.04 "Xenial"_
+Varnish package name you want to install. See `apt-cache policy varnish` or `yum list varnish` for a listing of available candidates.
 
-    varnish_config_path: /etc/varnish
+    varnish_version: "5.2"
 
-The path in which Varnish configuration files will be stored.
+Varnish version that should be installed. See the [Varnish Cache packagecloud.io repositories](https://packagecloud.io/varnishcache) for a listing of available versions. Some examples include: `5.2`, `5.1`, `5.0`, `4.1`, `4.0`, `3.0`, and `2.1`.
 
     varnish_default_vcl_template_path: default.vcl.j2
 
 The default VCL file to be copied. Defaults the simple template inside `templates/default.vcl.j2`. This path should be relative to the directory from which you run your playbook.
 
-    varnish_listen_port: "80"
+    varnish_listen_port: 80
 
 The port on which Varnish will listen (typically port 80).
-
-    varnish_admin_listen_host: "127.0.0.1"
-    varnish_admin_listen_port: "6082"
-
-The host and port through which Varnish will accept admin requests (like purge and status requests).
-
-    varnish_storage: "file,/var/lib/varnish/varnish_storage.bin,256M"
-
-How Varnish stores cache entries (this is passed in as the argument for `-s`). If you want to use in-memory storage, change to something like `malloc,256M`. Please read Varnish's [Getting Started guide](https://www.varnish-software.com/static/book/Getting_started.html) for more information.
 
     varnish_secret: "{{ inventory_hostname | to_uuid }}"
 
 The secret/key to be used for connecting to Varnish's admin backend (for purge requests, etc.).
+
+    varnish_config_path: /etc/varnish
+
+The path in which Varnish configuration files will be stored.
+
+    varnish_limit_nofile: 131072
+
+The `nofiles` PAM limit Varnish will attempt to set for open files. The normal default is ~1024 which is much too low for Varnish usage.
+
+    varnish_admin_listen_host: 127.0.0.1
+    varnish_admin_listen_port: 6082
+
+The host and port through which Varnish will accept admin requests (like purge and status requests).
+
+    varnish_storage: "malloc,{{ ((ansible_memtotal_mb * 0.75) | int) }}M"
+
+How Varnish stores cache entries (this is passed in as the argument for `-s`). The default is to use in-memory storage, using the 75% of the host memory for caching. Please read Varnish's [Getting Started guide](https://www.varnish-software.com/static/book/Getting_started.html) for more information.
+
+    varnish_pidfile: /run/varnishd.pid
+
+Varnish PID file path. Set to an empty string if you don't want to use a PID file.
+
+    varnish_enabled_services:
+      - varnish
+
+Services that will be started at boot and should be running after this role is complete. You might need to add additional services if required, e.g. `varnishncsa` and `varnishlog`. If set to an empty array, no services will be enabled at startup.
 
     varnish_backends_defaults:
       max_connections: 300
@@ -297,6 +314,6 @@ GPLv2
 Author Information
 ------------------
 
-This role was created in 2016 by [gcoop Cooperativa de Software Libre](http://gcoop.coop).
+This role was created in 2016 by [gcoop Cooperativa de Software Libre](https://www.gcoop.coop).
 
 It extends the functionality of the Varnish role created in 2014 by [Jeff Geerling](http://jeffgeerling.com/), author of [Ansible for DevOps](http://ansiblefordevops.com/).

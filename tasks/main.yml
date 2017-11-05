@@ -17,10 +17,3 @@
     mode: 0644
     validate: /usr/sbin/varnishd -C -f %s
   notify: restart varnish
-
-# Workaround for systems where sysv and systemd script files
-# https://github.com/ansible/ansible-modules-core/issues/3764
-- name: Ensure Varnish services start on boot.
-  command: systemctl enable -f {{ item }}
-  with_items: "{{ varnish_enabled_services | default([]) }}"
-  when: varnish_enabled_services and ansible_distribution_release == "jessie"

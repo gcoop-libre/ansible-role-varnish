@@ -1,6 +1,6 @@
 # {{ ansible_managed }}
 vcl 4.0;
-# Based on: https://github.com/mattiasgeniar/varnish-4.0-configuration-templates/blob/master/default.vcl
+# Based on: https://github.com/mattiasgeniar/varnish-5.0-configuration-templates/blob/master/default.vcl
 
 import std;
 import directors;
@@ -124,11 +124,12 @@ sub vcl_recv {
 {% endfor %}
 {% endif %}
 
+  # Normalize the header, remove the port (in case you're testing this on various TCP ports)
+  set req.http.Host = regsub(req.http.Host, ":[0-9]+", "");
+
   # Remove the proxy header (see https://httpoxy.org/#mitigate-varnish)
   unset req.http.proxy;
 
-  # Normalize the header, remove the port (in case you're testing this on various TCP ports)
-  set req.http.Host = regsub(req.http.Host, ":[0-9]+", "");
   # Normalize the query arguments
   set req.url = std.querysort(req.url);
 
@@ -151,7 +152,9 @@ sub vcl_recv {
     req.method != "PATCH" &&
     req.method != "DELETE"
   ) {
-    return (pipe);
+    /* Non-RFC2616 or CONNECT which is weird. */
+    /*Why send the packet upstream, while the visitor is using a non-valid HTTP method? */
+    return (synth(404, "Non-valid HTTP method!"));
   }
 
   # Implementing websocket support (https://www.varnish-cache.org/docs/4.0/users-guide/vcl-example-websockets.html)
@@ -218,12 +221,13 @@ sub vcl_recv {
     unset req.http.cookie;
   }
 
-  if (req.http.Cache-Control ~ "(?i)no-cache" && client.ip ~ editors) {
-  # http://varnish.projects.linpro.no/wiki/VCLExampleEnableForceRefresh
-  # Ignore requests via proxy caches and badly behaved crawlers
-  # like msnbot that send no-cache with every request.
-    if (! (req.http.Via || req.http.User-Agent ~ "(?i)bot" || req.http.X-Purge)) {
-      return(purge);
+  if (req.http.Cache-Control ~ "(?i)no-cache") {
+    if (client.ip ~ purge || client.ip ~ editors) {
+      # Ignore requests via proxy caches and badly behaved crawlers
+      # like msnbot that send no-cache with every request.
+      if (! (req.http.Via || req.http.User-Agent ~ "(?i)bot" || req.http.X-Purge)) {
+        return (purge);
+      }
     }
   }
 
@@ -545,7 +549,7 @@ sub vcl_hit {
 # if (!std.healthy(req.backend_hint) && (obj.ttl + obj.grace > 0s)) {
 #   return (deliver);
 # } else {
-#   return (fetch);
+#   return (miss);
 # }
 
   # We have no fresh fish. Lets look at the stale ones.
@@ -556,7 +560,7 @@ sub vcl_hit {
       return (deliver);
     } else {
       # No candidate for grace. Fetch a fresh object.
-      return(fetch);
+      return (miss);
     }
   } else {
     # backend is sick - use full grace
@@ -565,12 +569,12 @@ sub vcl_hit {
       return (deliver);
     } else {
       # no graced object.
-      return (fetch);
+      return (miss);
     }
   }
 
   # fetch & deliver once we get the result
-  return (fetch); # Dead code, keep as a safeguard
+  return (miss); # Dead code, keep as a safeguard
 }
 
 sub vcl_miss {
@@ -690,6 +694,11 @@ sub vcl_backend_response {
     set beresp.http.Location = regsub(beresp.http.Location, ":[0-9]+", "");
   }
 
+  # Don't cache 50x responses
+  if (beresp.status == 500 || beresp.status == 502 || beresp.status == 503 || beresp.status == 504) {
+    return (abandon);
+  }
+
 {% if varnish_vcl_backend_response_beresp_ttl | int > 0 %}
 {% if varnish_vcl_backend_response_force_beresp_ttl_exceptions | length > 0 %}
   if (
@@ -773,11 +782,6 @@ sub vcl_backend_response {
     return (deliver);
   }
 
-  # Don't cache 50x responses
-  if (beresp.status == 500 || beresp.status == 502 || beresp.status == 503 || beresp.status == 504) {
-    return (abandon);
-  }
-
   # Allow stale content, in case the backend goes down.
   # make Varnish keep all objects for 6 hours beyond their TTL
   set beresp.grace = {{ varnish_vcl_backend_response_beresp_grace }}h;
@@ -832,7 +836,7 @@ sub vcl_purge {
   if (req.method != "PURGE") {
     # restart request
     set req.http.X-Purge = "Yes";
-    return(restart);
+    return (restart);
   }
 }
 
