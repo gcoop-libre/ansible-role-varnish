@@ -26,36 +26,36 @@ varnish_backends:
   - name: localhost
     host: 127.0.0.1
     port: 8080
-  # Available properties
-  # - name: localhost
-  #   host: 127.0.0.1
-  #   port: 8080
-  #   max_connections: 300 (default)
-  #   first_byte_timeout: 300 (default)
-  #   connect_timeout: 5 (default)
-  #   between_bytes_timeout: 2 (default)
-  #   probe: True (default)
-  #   probe_url: /
-  #   probe_request: | (default)
-  #     "HEAD / HTTP/1.1"
-  #     "Host: 127.0.0.1"
-  #     "Connection: close"
-  #     "User-Agent: Varnish Health Probe";
-  #   probe_interval: 5 (default)
-  #   probe_timeout: 1 (default)
-  #   probe_window: 5 (default)
-  #   probe_threshold: 3 (default)
-  #   backend_for:
-  #     - site-1.com
+# Available properties
+# - name: localhost
+#   host: 127.0.0.1
+#   port: 8080
+#   max_connections: 300 (default)
+#   first_byte_timeout: 300 (default)
+#   connect_timeout: 5 (default)
+#   between_bytes_timeout: 2 (default)
+#   probe: True (default)
+#   probe_url: /
+#   probe_request: | (default)
+#     "HEAD / HTTP/1.1"
+#     "Host: 127.0.0.1"
+#     "Connection: close"
+#     "User-Agent: Varnish Health Probe";
+#   probe_interval: 5 (default)
+#   probe_timeout: 1 (default)
+#   probe_window: 5 (default)
+#   probe_threshold: 3 (default)
+#   backend_for:
+#     - site-1.com
 varnish_directors: []
-  # Available properties
-  # - name: default
-  #   type: round_robin (default)
-  #   backends:
-  #     - name: localhost
-  #       weight: 1 (only for hash and random directors)
-  #   director_for:
-  #     - site-1.com
+# Available properties
+# - name: default
+#   type: round_robin (default)
+#   backends:
+#     - name: localhost
+#       weight: 1 (only for hash and random directors)
+#   director_for:
+#     - site-1.com
 varnish_acl_purge_hosts:
   - localhost
   - 127.0.0.1
@@ -67,91 +67,91 @@ varnish_acl_editors_hosts:
 varnish_vcl_recv_backend_useless_parameters: []
 varnish_vcl_recv_remove_cookies: []
 varnish_vcl_recv_unset_all_cookies_exceptions: []
-  # Available properties
-  # - host: site-1.com
-  #   urls:
-  #     - ^/user
-  # - url: ^/admin
-  #   hosts:
-  #     - site-1.com
+# Available properties
+# - host: site-1.com
+#   urls:
+#     - ^/user
+# - url: ^/admin
+#   hosts:
+#     - site-1.com
 varnish_vcl_recv_unset_all_cookies_conditions: []
-  # Available properties
-  # - host: site-1.com
-  #   urls:
-  #     - ^/static-page
-  # - url: ^/static-section
-  #   hosts:
-  #     - site-1.com
+# Available properties
+# - host: site-1.com
+#   urls:
+#     - ^/static-page
+# - url: ^/static-section
+#   hosts:
+#     - site-1.com
 varnish_vcl_recv_unset_all_cookies: False
 varnish_vcl_recv_pass_exceptions: []
-  # Available properties
-  # - host: site-1.com
-  #   urls:
-  #     - ^/user
-  # - url: ^/admin
-  #   hosts:
-  #     - site-1.com
+# Available properties
+# - host: site-1.com
+#   urls:
+#     - ^/user
+# - url: ^/admin
+#   hosts:
+#     - site-1.com
 varnish_vcl_recv_pass_conditions: []
-  # Available properties
-  # - host: site-1.com
-  #   urls:
-  #     - ^/static-page
-  # - url: ^/static-section
-  #   hosts:
-  #     - site-1.com
+# Available properties
+# - host: site-1.com
+#   urls:
+#     - ^/static-page
+# - url: ^/static-section
+#   hosts:
+#     - site-1.com
 varnish_vcl_recv_pass: False
 varnish_vcl_recv_pipe_exceptions: []
-  # Available properties
-  # - host: site-1.com
-  #   urls:
-  #     - ^/user
-  # - url: ^/admin
-  #   hosts:
-  #     - site-1.com
+# Available properties
+# - host: site-1.com
+#   urls:
+#     - ^/user
+# - url: ^/admin
+#   hosts:
+#     - site-1.com
 varnish_vcl_recv_pipe_conditions: []
-  # Available properties
-  # - host: site-1.com
-  #   urls:
-  #     - ^/static-page
-  # - url: ^/static-section
-  #   hosts:
-  #     - site-1.com
+# Available properties
+# - host: site-1.com
+#   urls:
+#     - ^/static-page
+# - url: ^/static-section
+#   hosts:
+#     - site-1.com
 varnish_vcl_recv_pipe: False
 varnish_vcl_pipe_connection_close: True
 varnish_vcl_backend_response_unset_all_cookies_exceptions: []
-  # Available properties
-  # - host: site-1.com
-  #   urls:
-  #     - ^/user
-  # - url: ^/admin
-  #   hosts:
-  #     - site-1.com
+# Available properties
+# - host: site-1.com
+#   urls:
+#     - ^/user
+# - url: ^/admin
+#   hosts:
+#     - site-1.com
 varnish_vcl_backend_response_unset_all_cookies_conditions: []
-  # Available properties
-  # - host: site-1.com
-  #   urls:
-  #     - ^/static-page
-  # - url: ^/static-section
-  #   hosts:
-  #     - site-1.com
+# Available properties
+# - host: site-1.com
+#   urls:
+#     - ^/static-page
+# - url: ^/static-section
+#   hosts:
+#     - site-1.com
 varnish_vcl_backend_response_unset_all_cookies: False
 varnish_vcl_backend_response_beresp_ttl: 0
 varnish_vcl_backend_response_force_beresp_ttl_exceptions: []
-  # Available properties
-  # - host: site-1.com
-  #   urls:
-  #     - ^/user
-  # - url: ^/admin
-  #   hosts:
-  #     - site-1.com
+# Available properties
+# - host: site-1.com
+#   urls:
+#     - ^/user
+# - url: ^/admin
+#   hosts:
+#     - site-1.com
 varnish_vcl_backend_response_force_beresp_ttl_conditions: []
-  # Available properties
-  # - host: site-1.com
-  #   urls:
-  #     - ^/static-page
-  # - url: ^/static-section
-  #   hosts:
-  #     - site-1.com
+# Available properties
+# - host: site-1.com
+#   urls:
+#     - ^/static-page
+# - url: ^/static-section
+#   hosts:
+#     - site-1.com
 varnish_vcl_backend_response_force_beresp_ttl: False
 varnish_vcl_backend_response_beresp_grace: 6
 varnish_vcl_backend_error_response: "{{ lookup('file', 'files/503.j2') }}"
